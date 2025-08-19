@@ -142,3 +142,23 @@ h1{
   .cta{ gap:8px }
   .btn{ padding:10px 14px }
 }
+
+.btn-whatsapp {
+  background-color: #25D366; /* verde WhatsApp */
+  color: #fff;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-whatsapp:hover {
+  background-color: #1ebe5c;
+  color: #fff;
+}
+
+/* Si querés usar un ícono con Unicode (emoji) */
+.btn-whatsapp::before {
+  content: "💬";
+}
+
