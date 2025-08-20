@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="styles_en_construccion_de_leon.css">
   <meta name="description" content="De León Indumentaria — Sitio en construcción.">
 </head>
+
+
+  
 <body>
   <main class="wrap">
     <section class="card" role="region" aria-labelledby="titulo">
@@ -27,12 +30,15 @@
         <a class="btn-whatsapp" href="https://wa.me/5492235354059" target="_blank" rel="noopener">WhatsApp 1</a>
         <a class="btn-whatsapp" href="https://wa.me/5492235413819" target="_blank" rel="noopener">WhatsApp 2</a>
       </div>
-      
-      <form class="suscribe" action="#" method="post" onsubmit="event.preventDefault(); this.reset(); alert('¡Gracias! Te avisaremos cuando lancemos.');">
-        <label for="email" class="sr-only">Tu email</label>
-        <input id="email" name="email" type="email" placeholder="tuemail@ejemplo.com" required>
-        <button type="submit">Avisarme</button>
-      </form>
+
+
+<form class="suscribe" id="form-sub">
+  <label for="email" class="sr-only">Tu email</label>
+  <input id="email" name="email" type="email" placeholder="tuemail@ejemplo.com" required>
+  <!-- Honeypot anti-spam (oculto; bots suelen llenarlo) -->
+  <input type="text" name="company" autocomplete="off" style="display:none">
+  <button type="submit">Avisarme</button>
+</form>
 
       <p class="foot">© <span id="year"></span> De León Indumentaria · Mar del Plata, AR</p>
     </section>
@@ -42,5 +48,48 @@
     // Año dinámico
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://fbkoaqpnndnvwmlplupm.supabase.co";   // <-- pegá tu URL
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZia29hcXBubmRudndtbHBsdXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MDg2MzUsImV4cCI6MjA3MTI4NDYzNX0.pb3cP2T5LnxZz4cs9ZPZjpr0ABzZ3eTKJw88DW2RzKE";                     // <-- pegá tu anon key
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  async function guardarEmail(email) {
+    // upsert evita error si el email ya existe (único)
+    const { error } = await sb
+      .from('suscriptores')
+      .upsert([{ email }], { onConflict: 'email' }); // ignora duplicados
+    if (error) throw error;
+  }
+
+  document.getElementById('form-sub')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const email = form.email.value.trim();
+    const honeypot = form.company.value.trim(); // campo trampa
+
+    if (honeypot) {
+      // Probable bot: no hacemos nada “visible” pero tampoco insertamos
+      form.reset();
+      return;
+    }
+
+    try {
+      await guardarEmail(email);
+      alert('¡Gracias! Te avisaremos cuando lancemos.');
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      alert('No pudimos guardar tu email. Probá de nuevo en un momento.');
+    }
+  });
+</script>
+
+
+  
+
+
+
 </body>
 </html>
