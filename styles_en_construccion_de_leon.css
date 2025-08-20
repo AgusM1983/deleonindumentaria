@@ -171,3 +171,25 @@ h1{
   content: "💬";
 }
 
+.btn-instagram {
+  background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
+  color: #fff;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform .12s ease, filter .12s ease, box-shadow .2s ease;
+  box-shadow: 0 10px 24px rgba(221, 42, 123, .35);
+}
+
+.btn-instagram:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+
+
