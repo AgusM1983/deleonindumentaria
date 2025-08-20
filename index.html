@@ -59,7 +59,7 @@
     // upsert evita error si el email ya existe (único)
     const { error } = await sb
       .from('suscriptores')
-      .upsert([{ email }], { onConflict: 'email' }); // ignora duplicados
+      .insert([{ email }], { onConflict: 'email' }); // ignora duplicados
     if (error) throw error;
   }
 
