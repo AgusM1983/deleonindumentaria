@@ -150,12 +150,21 @@ h1{
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  padding: 12px 18px;   /* igual que .btn */
+  border-radius: 999px; /* 👈 hace que sea redondo/pill */
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform .12s ease, filter .12s ease, box-shadow .2s ease;
+  box-shadow: 0 10px 24px rgba(37, 211, 102, .25);
 }
 
 .btn-whatsapp:hover {
   background-color: #1ebe5c;
   color: #fff;
+  transform: translateY(-1px);
+  filter: brightness(1.05);
 }
+
 
 /* Si querés usar un ícono con Unicode (emoji) */
 .btn-whatsapp::before {
